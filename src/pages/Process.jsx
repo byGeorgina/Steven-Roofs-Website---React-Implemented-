@@ -1,26 +1,23 @@
 const steps = [
-  { title: 'Initial Contact', description: 'Reach out by phone, email, or our online form. We respond within one business day to schedule your free inspection.' },
-  { title: 'Free Roof Inspection', description: 'A certified inspector visits your property, documents existing conditions with photos, and identifies all areas of concern.' },
-  { title: 'Written Estimate', description: 'You receive a detailed written estimate with material options, labor costs, and project timeline — no hidden fees, no pressure.' },
-  { title: 'Project Scheduling', description: 'Once approved, we schedule your project and assign a dedicated project manager who keeps you updated from start to finish.' },
-  { title: 'Installation & Cleanup', description: 'Our crew completes the work efficiently and professionally, then performs a full cleanup including magnetic nail sweep of the property.' },
-  { title: 'Final Walkthrough', description: 'We walk the finished project with you, answer any questions, and provide your warranty documentation before we leave.' },
+  { id: 1, title: 'Free Inspection', description: "We visit your property, assess the roof's condition, take measurements, and identify any existing damage — at no cost to you." },
+  { id: 2, title: 'Written Estimate', description: 'You receive a detailed, itemized quote within 48 hours. We walk you through every line item and answer all your questions before you sign.' },
+  { id: 3, title: 'Installation Day', description: 'Our crew arrives on schedule, protects your property, and completes the work with minimal disruption. A project manager is on-site throughout.' },
+  { id: 4, title: 'Final Walkthrough', description: 'We inspect the finished roof with you, clean up completely, and provide all warranty documentation before we consider the job done.' },
 ]
 
 const Process = () => {
   return (
     <main className="container">
-      <section style={{ marginTop: '80px', marginBottom: '80px' }}>
+      <section className="grid-section" style={{ marginTop: '80px' }}>
         <div className="grid-header">
-          <span className="tagline">Our Process</span>
-          <h2>How It Works</h2>
-          <p>From first call to final walkthrough, here is exactly what to expect when you work with Steve Watts LLC.</p>
+          <span className="tagline">Process</span>
+          <h2>Simple. Transparent, Done Right.</h2>
         </div>
 
-        <div className="features-right" style={{ marginTop: '40px' }}>
-          {steps.map((step, index) => (
-            <div key={step.title} className="feature-item">
-              <div className="icon-box">{index + 1}</div>
+        <div className="grid-container">
+          {steps.map(step => (
+            <div key={step.id} className="grid-item">
+              <div className="icon-box">{step.id}</div>
               <div>
                 <h3>{step.title}</h3>
                 <p>{step.description}</p>
