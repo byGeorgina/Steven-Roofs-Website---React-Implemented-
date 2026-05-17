@@ -367,7 +367,7 @@ footer h3 {
 }
 
 #caca {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url("images/Asphalt-Shingle-Roof.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url("/images/Asphalt-Shingle-Roof.jpg");
     height: 500px; 
     background-position: center;
     background-size: cover;

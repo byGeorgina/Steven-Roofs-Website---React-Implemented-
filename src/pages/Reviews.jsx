@@ -66,7 +66,7 @@ const Reviews = () => {
           <input type="text" placeholder="City, State (optional)" value={form.ubicacion} onChange={e => setForm({ ...form, ubicacion: e.target.value })} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '0.85rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Your Rating</label>
+            <label style={{ fontSize: '0.85rem', color: '#999', textTransform: 'uppercase', letterSpacing: '1px' }}>Your Rating</label>
             <div style={{ display: 'flex', gap: '6px' }}>
               {[1, 2, 3, 4, 5].map(star => (
                 <button
