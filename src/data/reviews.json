@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "nombre": "Michael R.",
+    "ubicacion": "Phoenix, AZ",
+    "estrellas": 5,
+    "mensaje": "Summit replaced our entire roof after the hailstorm last May. The crew was professional, fast, and the cleanup was perfect. Our insurance adjuster even complimented the quality of the installation report."
+  },
+  {
+    "id": 2,
+    "nombre": "Linda S.",
+    "ubicacion": "Tucson, AZ",
+    "estrellas": 5,
+    "mensaje": "I called about a leak on a Friday afternoon and they had someone out by Saturday morning. Fixed the flashing issue same day. Honest, no-pressure, and reasonably priced. Highly recommend."
+  },
+  {
+    "id": 3,
+    "nombre": "James T.",
+    "ubicacion": "Scottsdale, AZ",
+    "estrellas": 5,
+    "mensaje": "We used Summit for our 12-unit apartment building. The project manager kept us updated every day, finished two days ahead of schedule, and the final cost matched the estimate exactly. Outstanding."
+  }
+]

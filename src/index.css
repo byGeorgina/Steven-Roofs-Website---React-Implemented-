@@ -1,0 +1,436 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background-color: #FFFFFF;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3 {
+    color: #222;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #555;
+    margin-bottom: 15px;
+    font-weight: 300;
+}
+
+nav {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eaeaea;
+}
+
+#navbar {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    flex-wrap: wrap;
+}
+
+#navbar li a {
+    display: inline-block;
+    text-decoration: none;
+    color: #1d6394;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    border-radius: 4px;
+}
+
+#navbar li a:hover {
+    background-color: #f0faff;
+}
+
+#logo {
+    width: 8rem;
+    margin-right: 20px;
+}
+
+.tagline {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.divider {
+    border: none;
+    border-top: 2px solid #222;
+    margin: 60px 0;
+}
+
+.placeholder-img {
+    width: 100%;
+    background-color: #e2e2e2;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.square-img {
+    aspect-ratio: 1 / 1;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.btn {
+    padding: 12px 24px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #111;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #333;
+    border-color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #f4f4f4;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 80px 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+}
+
+.hero-text {
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+
+.hero-image-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 30px;
+}
+
+.hero-image-wrapper img {
+    height: 300px; 
+}
+
+.side-features {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.features-left {
+    flex: 1;
+}
+
+.features-left h2 {
+    font-size: 1.8rem;
+}
+
+.features-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.feature-item {
+    display: flex;
+    gap: 20px;
+}
+
+.icon-box {
+    background-color: #e2e2e2;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.feature-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.feature-item p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.split-section {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    margin: 80px 0;
+}
+
+.split-image, .split-text {
+    flex: 1;
+}
+
+.split-text h2 {
+    font-size: 1.8rem;
+}
+
+.grid-section {
+    margin: 80px 0;
+}
+
+.grid-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.grid-item {
+    display: flex;
+    gap: 20px;
+}
+
+.grid-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.grid-item p {
+    font-size: 0.9rem;
+}
+
+.reviews-section {
+    display: flex;
+    gap: 30px;
+    margin: 80px 0;
+}
+
+.review-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.review-col p {
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.reviewer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #ddd;
+    border-radius: 50%;
+}
+
+.reviewer-info strong {
+    display: block;
+    font-size: 0.9rem;
+}
+
+.reviewer-info span {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.contact-section {
+    display: flex;
+    gap: 60px;
+    margin-bottom: 80px;
+}
+
+.contact-text, .contact-form {
+    flex: 1;
+}
+
+.contact-info {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.contact-info li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.contact-info a {
+    color: #1d6394;
+    text-decoration: none;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.contact-form input, .contact-form select, .contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+footer h3 {
+    color: #fff;
+}
+
+.footer-links {
+    margin: 20px 0;
+}
+
+.footer-links a {
+    color: #aaa;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .side-features, .split-section, .contact-section {
+        flex-direction: column;
+    }
+    
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .reviews-section {
+        flex-direction: column;
+    }
+    
+    .button-group {
+        justify-content: center;
+    }
+}
+
+#caca {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url("images/Asphalt-Shingle-Roof.jpg");
+    height: 500px; 
+    background-position: center;
+    background-size: cover;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#imgae {
+    margin: 0;
+    text-align: center;
+    color: #ffffff; 
+    font-size: 3.5rem;
+    font-weight: 700; 
+    letter-spacing: 3px;
+    
+ 
+}
+/* ===== HISTORIAL DE SOLICITUDES (estimate.js) ===== */
+.historial-item {
+    background: #f9f9f9;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+}
+
+.historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.historial-fecha {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.historial-servicio {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1d6394;
+    margin: 4px 0;
+}
+
+.historial-contacto {
+    font-size: 0.85rem;
+    color: #777;
+    margin: 2px 0;
+}
+
+.historial-mensaje {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #555;
+    margin-top: 8px;
+    border-left: 3px solid #ddd;
+    padding-left: 10px;
+}
+
+.historial-vacio {
+    color: #999;
+    font-style: italic;
+}
