@@ -1,29 +1,59 @@
-import { useState } from 'react'
-import seedReviews from '../data/reviews.json'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+const API_URL = 'http://127.0.0.1:3001/reviews'
 
 const Reviews = () => {
-  const [reviews, setReviews] = useState(() => {
-    const saved = localStorage.getItem('steveWattsUserReviews')
-    return saved ? JSON.parse(saved) : seedReviews
-  })
+  const [reviews, setReviews] = useState([])
   const [form, setForm] = useState({ nombre: '', ubicacion: '', estrellas: 0, mensaje: '' })
-  const [submitted, setSubmitted] = useState(false)
   const [hovered, setHovered] = useState(0)
+  const [submitted, setSubmitted] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    axios.get(API_URL)
+      .then(res => setReviews(res.data))
+      .catch(err => console.error('Error al cargar reseñas:', err))
+  }, [])
+
+  // PASO 6: validaciones
+  const validate = () => {
+    const newErrors = {}
+    if (!form.nombre.trim()) newErrors.nombre = 'Name is required.'
+    if (!form.mensaje.trim()) newErrors.mensaje = 'Please write a message.'
+    if (!form.estrellas) newErrors.estrellas = 'Please select a rating.'
+    return newErrors
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.nombre || !form.mensaje || !form.estrellas) {
-      alert('Please fill in your name, a rating, and a message.')
+    const foundErrors = validate()
+    if (Object.keys(foundErrors).length > 0) {
+      setErrors(foundErrors)
       return
     }
-    const newReview = { ...form, id: Date.now(), fecha: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) }
-    const updated = reviews.concat(newReview)
-    setReviews(updated)
-    localStorage.setItem('steveWattsUserReviews', JSON.stringify(updated))
-    setForm({ nombre: '', ubicacion: '', estrellas: 0, mensaje: '' })
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 4000)
+
+    const newReview = {
+      ...form,
+      fecha: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    }
+
+    axios.post(API_URL, newReview)
+      .then(res => {
+        setReviews([...reviews, res.data])
+        setForm({ nombre: '', ubicacion: '', estrellas: 0, mensaje: '' })
+        setErrors({})
+        setSubmitted(true)
+        setTimeout(() => setSubmitted(false), 4000)
+      })
+      .catch(err => console.error('Error al guardar reseña:', err))
   }
+
+  const seedReviews = reviews.slice(0, 3)
 
   return (
     <main className="container">
@@ -57,13 +87,29 @@ const Reviews = () => {
         </div>
 
         <form className="contact-form" onSubmit={handleSubmit}>
+
           {submitted && (
             <div style={{ background: '#d4edda', color: '#155724', padding: '12px 16px', borderRadius: '6px', fontWeight: '500' }}>
               ✅ Thank you! Your review has been posted.
             </div>
           )}
-          <input type="text" placeholder="Your Name" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} required />
-          <input type="text" placeholder="City, State (optional)" value={form.ubicacion} onChange={e => setForm({ ...form, ubicacion: e.target.value })} />
+
+          <div>
+            <input
+              type="text"
+              placeholder="Your Name"
+              value={form.nombre}
+              onChange={e => { setForm({ ...form, nombre: e.target.value }); setErrors({ ...errors, nombre: '' }) }}
+            />
+            {errors.nombre && <p style={{ color: 'red', fontSize: '0.8rem', margin: '4px 0 0' }}>{errors.nombre}</p>}
+          </div>
+
+          <input
+            type="text"
+            placeholder="City, State (optional)"
+            value={form.ubicacion}
+            onChange={e => setForm({ ...form, ubicacion: e.target.value })}
+          />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '0.85rem', color: '#999', textTransform: 'uppercase', letterSpacing: '1px' }}>Your Rating</label>
@@ -72,16 +118,33 @@ const Reviews = () => {
                 <button
                   key={star}
                   type="button"
-                  style={{ fontSize: '1.8rem', background: 'none', border: 'none', cursor: 'pointer', color: star <= (hovered || form.estrellas) ? '#f5a623' : '#ccc', padding: 0 }}
-                  onClick={() => setForm({ ...form, estrellas: star })}
+                  style={{
+                    fontSize: '1.8rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: star <= (hovered || form.estrellas) ? '#f5a623' : '#ccc',
+                    padding: 0
+                  }}
+                  onClick={() => { setForm({ ...form, estrellas: star }); setErrors({ ...errors, estrellas: '' }) }}
                   onMouseEnter={() => setHovered(star)}
                   onMouseLeave={() => setHovered(0)}
                 >★</button>
               ))}
             </div>
+            {errors.estrellas && <p style={{ color: 'red', fontSize: '0.8rem', margin: '4px 0 0' }}>{errors.estrellas}</p>}
           </div>
 
-          <textarea rows="4" placeholder="Tell us about your experience..." value={form.mensaje} onChange={e => setForm({ ...form, mensaje: e.target.value })} required></textarea>
+          <div>
+            <textarea
+              rows="4"
+              placeholder="Tell us about your experience..."
+              value={form.mensaje}
+              onChange={e => { setForm({ ...form, mensaje: e.target.value }); setErrors({ ...errors, mensaje: '' }) }}
+            ></textarea>
+            {errors.mensaje && <p style={{ color: 'red', fontSize: '0.8rem', margin: '4px 0 0' }}>{errors.mensaje}</p>}
+          </div>
+
           <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Post Review</button>
         </form>
       </section>

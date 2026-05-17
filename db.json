@@ -1,0 +1,61 @@
+{
+  "estimates": [
+    {
+      "firstName": "Nana",
+      "lastName": "Komatsu",
+      "email": "NanaK@hotmail.com",
+      "phone": "+7 123 456 4589",
+      "service": "Roof Inspections",
+      "mensaje": "hello world",
+      "fecha": "May 17, 2026",
+      "id": "aBfa0WDteFQ"
+    },
+    {
+      "firstName": "Blair ",
+      "lastName": "Waldorf",
+      "email": "QueenB@hotmail.com",
+      "phone": "123 123 1233",
+      "service": "Residential Roofing",
+      "mensaje": "",
+      "fecha": "May 17, 2026",
+      "id": "vAAXd-f3Z_M"
+    },
+    {
+      "firstName": "Valerie",
+      "lastName": "Watts",
+      "email": "v.watts@gmail.com",
+      "phone": "1324557415",
+      "service": "Residential Roofing",
+      "mensaje": "lol",
+      "fecha": "May 17, 2026",
+      "id": "OT0cVFNes30"
+    }
+  ],
+  "reviews": [
+    {
+      "nombre": "Blair Waldorf",
+      "ubicacion": "New York ",
+      "estrellas": 5,
+      "mensaje": "Pretty good!!",
+      "fecha": "May 17, 2026",
+      "id": "ImUp4wlbdsQ"
+    },
+    {
+      "nombre": "valerie",
+      "ubicacion": "villahermosa",
+      "estrellas": 5,
+      "mensaje": "fine ",
+      "fecha": "May 17, 2026",
+      "id": "NAoGEWJTuVI"
+    },
+    {
+      "nombre": "Kim Dokja",
+      "ubicacion": "korea",
+      "estrellas": 5,
+      "mensaje": "sí",
+      "fecha": "May 17, 2026",
+      "id": "MffoNz3OJ4w"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
