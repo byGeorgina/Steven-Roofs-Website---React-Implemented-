@@ -113,6 +113,5 @@
       "title": "Final Walkthrough",
       "description": "We inspect the finished roof with you, clean up completely, and provide all warranty documentation before we consider the job done."
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }
