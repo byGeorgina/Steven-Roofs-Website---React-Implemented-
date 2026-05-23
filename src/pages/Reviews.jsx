@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const API_URL = 'https://steven-roofs-q4s7.onrender.com/reviews'
 
-const Reviews = () => {
+const Reviews = ({ isAdmin }) => {
   const [reviews, setReviews] = useState([])
   const [form, setForm] = useState({ nombre: '', ubicacion: '', estrellas: 0, mensaje: '', avatar: '' })
   const [hovered, setHovered] = useState(0)
@@ -13,7 +13,7 @@ const Reviews = () => {
   useEffect(() => {
     axios.get(API_URL)
       .then(res => setReviews(res.data))
-      .catch(err => console.error('Error al cargar reseñas:', err))
+      .catch(err => console.error(err))
   }, [])
 
   const validate = () => {
@@ -27,30 +27,38 @@ const Reviews = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const foundErrors = validate()
-    if (Object.keys(foundErrors).length > 0) {
-      setErrors(foundErrors)
-      return
-    }
+    if (Object.keys(foundErrors).length > 0) { setErrors(foundErrors); return }
 
     const newReview = {
       ...form,
-      fecha: new Date().toLocaleDateString('en-US', {
-        year: 'numeric', month: 'long', day: 'numeric'
-      })
+      pending: true,
+      fecha: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     }
 
     axios.post(API_URL, newReview)
-      .then(res => {
-        setReviews([...reviews, res.data])
+      .then(() => {
         setForm({ nombre: '', ubicacion: '', estrellas: 0, mensaje: '', avatar: '' })
         setErrors({})
         setSubmitted(true)
         setTimeout(() => setSubmitted(false), 4000)
       })
-      .catch(err => console.error('Error al guardar reseña:', err))
+      .catch(err => console.error(err))
   }
 
-  const seedReviews = reviews.slice(0, 3)
+  const handleApprove = (review) => {
+    axios.put(`${API_URL}/${review.id}`, { ...review, pending: false })
+      .then(res => setReviews(reviews.map(r => r.id !== review.id ? r : res.data)))
+  }
+
+  const handleDelete = (id) => {
+    if (!window.confirm('Delete this review?')) return
+    axios.delete(`${API_URL}/${id}`)
+      .then(() => setReviews(reviews.filter(r => r.id !== id)))
+  }
+
+  const approved = reviews.filter(r => !r.pending)
+  const pending = reviews.filter(r => r.pending)
+  const seedReviews = approved.slice(0, 3)
 
   return (
     <main className="container">
@@ -64,18 +72,10 @@ const Reviews = () => {
           <div key={review.id} className="review-col">
             <p>"{review.mensaje}"</p>
             <div className="reviewer">
-              {review.avatar ? (
-                <img
-                  src={review.avatar}
-                  alt={review.nombre}
-                  style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-                  onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex' }}
-                />
-              ) : null}
-              <div
-                className="avatar"
-                style={{ display: review.avatar ? 'none' : 'flex' }}
-              ></div>
+              {review.avatar
+                ? <img src={review.avatar} alt={review.nombre} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} onError={e => e.target.style.display = 'none'} />
+                : <div className="avatar"></div>
+              }
               <div className="reviewer-info">
                 <strong>{review.nombre}</strong>
                 <span>{review.ubicacion} | {'★'.repeat(review.estrellas)}</span>
@@ -97,83 +97,69 @@ const Reviews = () => {
         <form className="contact-form" onSubmit={handleSubmit}>
           {submitted && (
             <div style={{ background: '#d4edda', color: '#155724', padding: '12px 16px', borderRadius: '6px', fontWeight: '500' }}>
-              ✅ Thank you! Your review has been posted.
+              ✅ Thank you! Your review will be published after approval.
             </div>
           )}
-
           <div>
-            <input
-              type="text"
-              placeholder="Your Name"
-              value={form.nombre}
-              onChange={e => { setForm({ ...form, nombre: e.target.value }); setErrors({ ...errors, nombre: '' }) }}
-            />
+            <input type="text" placeholder="Your Name" value={form.nombre}
+              onChange={e => { setForm({ ...form, nombre: e.target.value }); setErrors({ ...errors, nombre: '' }) }} />
             {errors.nombre && <p style={{ color: 'red', fontSize: '0.8rem', margin: '4px 0 0' }}>{errors.nombre}</p>}
           </div>
-
-          <input
-            type="text"
-            placeholder="City, State (optional)"
-            value={form.ubicacion}
-            onChange={e => setForm({ ...form, ubicacion: e.target.value })}
-          />
-
-          <input
-            type="url"
-            placeholder="Profile photo URL (optional)"
-            value={form.avatar}
-            onChange={e => setForm({ ...form, avatar: e.target.value })}
-          />
-
+          <input type="text" placeholder="City, State (optional)" value={form.ubicacion}
+            onChange={e => setForm({ ...form, ubicacion: e.target.value })} />
+          <input type="url" placeholder="Profile photo URL (optional)" value={form.avatar}
+            onChange={e => setForm({ ...form, avatar: e.target.value })} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '0.85rem', color: '#999', textTransform: 'uppercase', letterSpacing: '1px' }}>Your Rating</label>
             <div style={{ display: 'flex', gap: '6px' }}>
               {[1, 2, 3, 4, 5].map(star => (
-                <button
-                  key={star}
-                  type="button"
-                  style={{
-                    fontSize: '1.8rem', background: 'none', border: 'none', cursor: 'pointer',
-                    color: star <= (hovered || form.estrellas) ? '#f5a623' : '#ccc', padding: 0
-                  }}
+                <button key={star} type="button"
+                  style={{ fontSize: '1.8rem', background: 'none', border: 'none', cursor: 'pointer', color: star <= (hovered || form.estrellas) ? '#f5a623' : '#ccc', padding: 0 }}
                   onClick={() => { setForm({ ...form, estrellas: star }); setErrors({ ...errors, estrellas: '' }) }}
-                  onMouseEnter={() => setHovered(star)}
-                  onMouseLeave={() => setHovered(0)}
-                >★</button>
+                  onMouseEnter={() => setHovered(star)} onMouseLeave={() => setHovered(0)}>★</button>
               ))}
             </div>
             {errors.estrellas && <p style={{ color: 'red', fontSize: '0.8rem', margin: '4px 0 0' }}>{errors.estrellas}</p>}
           </div>
-
           <div>
-            <textarea
-              rows="4"
-              placeholder="Tell us about your experience..."
-              value={form.mensaje}
-              onChange={e => { setForm({ ...form, mensaje: e.target.value }); setErrors({ ...errors, mensaje: '' }) }}
-            ></textarea>
+            <textarea rows="4" placeholder="Tell us about your experience..." value={form.mensaje}
+              onChange={e => { setForm({ ...form, mensaje: e.target.value }); setErrors({ ...errors, mensaje: '' }) }}></textarea>
             {errors.mensaje && <p style={{ color: 'red', fontSize: '0.8rem', margin: '4px 0 0' }}>{errors.mensaje}</p>}
           </div>
-
           <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Post Review</button>
         </form>
       </section>
 
+      {isAdmin && pending.length > 0 && (
+        <section style={{ margin: '0 0 60px' }}>
+          <h3 style={{ marginBottom: '20px', color: '#c0392b' }}>⏳ Pending Approval ({pending.length})</h3>
+          {pending.map(r => (
+            <div key={r.id} className="historial-item" style={{ borderLeft: '4px solid #f5a623' }}>
+              <div className="historial-header">
+                <strong>{r.nombre}{r.ubicacion ? ` · ${r.ubicacion}` : ''}</strong>
+                <span className="historial-fecha">{r.fecha}</span>
+              </div>
+              <p className="historial-servicio">{'★'.repeat(r.estrellas)}{'☆'.repeat(5 - r.estrellas)}</p>
+              <p className="historial-mensaje">"{r.mensaje}"</p>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                <button className="btn btn-primary" onClick={() => handleApprove(r)}>✅ Approve</button>
+                <button className="btn btn-primary" style={{ background: '#c0392b', borderColor: '#c0392b' }} onClick={() => handleDelete(r.id)}>🗑 Delete</button>
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
       <section style={{ margin: '0 0 80px' }}>
         <h3 style={{ marginBottom: '20px' }}>💬 Community Reviews</h3>
-        {[...reviews].reverse().map(r => (
+        {approved.length === 0 && <p>No reviews yet.</p>}
+        {[...approved].reverse().map(r => (
           <div key={r.id} className="historial-item">
             <div className="historial-header" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              {r.avatar ? (
-                <img
-                  src={r.avatar}
-                  alt={r.nombre}
-                  style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-                  onError={e => e.target.style.display = 'none'}
-                />
-              ) : (
-                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ddd', flexShrink: 0 }}></div>
-              )}
+              {r.avatar
+                ? <img src={r.avatar} alt={r.nombre} style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} onError={e => e.target.style.display = 'none'} />
+                : <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ddd', flexShrink: 0 }}></div>
+              }
               <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <strong>{r.nombre}{r.ubicacion ? ` · ${r.ubicacion}` : ''}</strong>
                 <span className="historial-fecha">{r.fecha}</span>
@@ -181,6 +167,9 @@ const Reviews = () => {
             </div>
             <p className="historial-servicio">{'★'.repeat(r.estrellas)}{'☆'.repeat(5 - r.estrellas)}</p>
             <p className="historial-mensaje">"{r.mensaje}"</p>
+            {isAdmin && (
+              <button className="btn btn-primary" style={{ background: '#c0392b', borderColor: '#c0392b', marginTop: '8px' }} onClick={() => handleDelete(r.id)}>🗑 Delete</button>
+            )}
           </div>
         ))}
       </section>

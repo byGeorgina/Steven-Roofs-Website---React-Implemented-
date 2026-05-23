@@ -1,33 +1,29 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const API_URL = 'http://127.0.0.1:3001/estimates'
+const API_URL = 'http://localhost:3001/estimates'
 
-const FreeEstimate = () => {
+const FreeEstimate = ({ isAdmin }) => {
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    service: '',
-    mensaje: ''
+    firstName: '', lastName: '', email: '', phone: '', service: '', mensaje: ''
   })
   const [estimates, setEstimates] = useState([])
   const [submitted, setSubmitted] = useState(false)
   const [errors, setErrors] = useState({})
 
   useEffect(() => {
-    axios.get(API_URL)
-      .then(res => setEstimates(res.data))
-      .catch(err => console.error('Error al cargar:', err))
-  }, [])
+    if (isAdmin) {
+      axios.get(API_URL)
+        .then(res => setEstimates(res.data))
+        .catch(err => console.error('Error al cargar:', err))
+    }
+  }, [isAdmin])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.id]: e.target.value })
     setErrors({ ...errors, [e.target.id]: '' })
   }
 
-  // PASO 6: validaciones
   const validate = () => {
     const newErrors = {}
     if (!form.firstName.trim()) newErrors.firstName = 'First name is required.'
@@ -53,21 +49,24 @@ const FreeEstimate = () => {
     const newEstimate = {
       ...form,
       fecha: new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+        year: 'numeric', month: 'long', day: 'numeric'
       })
     }
 
     axios.post(API_URL, newEstimate)
-      .then(res => {
-        setEstimates([...estimates, res.data])
+      .then(() => {
         setForm({ firstName: '', lastName: '', email: '', phone: '', service: '', mensaje: '' })
         setErrors({})
         setSubmitted(true)
         setTimeout(() => setSubmitted(false), 4000)
       })
       .catch(err => console.error('Error al guardar:', err))
+  }
+
+  const handleDelete = (id) => {
+    if (!window.confirm('Delete this estimate?')) return
+    axios.delete(`${API_URL}/${id}`)
+      .then(() => setEstimates(estimates.filter(e => e.id !== id)))
   }
 
   return (
@@ -86,8 +85,6 @@ const FreeEstimate = () => {
         </div>
 
         <form className="contact-form" onSubmit={handleSubmit}>
-
-          
           {submitted && (
             <div style={{ background: '#d4edda', color: '#155724', padding: '12px 16px', borderRadius: '6px', fontWeight: '500' }}>
               ✅ Your request was submitted! We'll contact you within 24 hours.
@@ -127,9 +124,9 @@ const FreeEstimate = () => {
         </form>
       </section>
 
-      <section style={{ margin: '60px 0' }}>
-        <h3 style={{ marginBottom: '20px' }}>📋 Submitted Requests</h3>
-        <div id="historialEstimates">
+      {isAdmin && (
+        <section style={{ margin: '60px 0' }}>
+          <h3 style={{ marginBottom: '20px' }}>📋 Submitted Requests ({estimates.length})</h3>
           {estimates.length === 0
             ? <p className="historial-vacio">No requests submitted yet.</p>
             : [...estimates].reverse().map(e => (
@@ -141,11 +138,18 @@ const FreeEstimate = () => {
                 <p className="historial-servicio">{e.service}</p>
                 <p className="historial-contacto">{e.email} · {e.phone}</p>
                 <p className="historial-mensaje">"{e.mensaje}"</p>
+                <button
+                  className="btn btn-primary"
+                  style={{ background: '#c0392b', borderColor: '#c0392b', marginTop: '10px' }}
+                  onClick={() => handleDelete(e.id)}
+                >
+                  🗑 Delete
+                </button>
               </div>
             ))
           }
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   )
 }

@@ -38,7 +38,8 @@
       "estrellas": 5,
       "mensaje": "Pretty good!!",
       "fecha": "May 17, 2026",
-      "id": "ImUp4wlbdsQ"
+      "id": "ImUp4wlbdsQ",
+      "pending": false
     },
     {
       "nombre": "valerie",
@@ -46,7 +47,8 @@
       "estrellas": 5,
       "mensaje": "fine ",
       "fecha": "May 17, 2026",
-      "id": "NAoGEWJTuVI"
+      "id": "NAoGEWJTuVI",
+      "pending": false
     },
     {
       "nombre": "Kim Dokja",
@@ -54,7 +56,62 @@
       "estrellas": 5,
       "mensaje": "sí",
       "fecha": "May 17, 2026",
-      "id": "MffoNz3OJ4w"
+      "id": "MffoNz3OJ4w",
+      "pending": false
+    }
+  ],
+  "services": [
+    {
+      "id": "1",
+      "title": "Residential Roofing",
+      "description": "New construction, reroof, and replacement for single-family homes and multi-unit properties. We work with asphalt shingles, metal, and tile."
+    },
+    {
+      "id": "2",
+      "title": "Commercial Roofing",
+      "description": "Flat and low-slope roofing systems for commercial buildings — TPO, EPDM, modified bitumen, and built-up roofing tailored to your structure."
+    },
+    {
+      "id": "3",
+      "title": "Repair & Leak Detection",
+      "description": "Fast diagnosis and reliable repair of leaks, storm damage, broken shingles, flashing failures, and clogged gutters before small problems become big ones."
+    },
+    {
+      "id": "4",
+      "title": "Storm Damage Restoration",
+      "description": "We work directly with insurance companies to make the claims process easy. Emergency tarping and board-up available 24/7 after severe weather events."
+    },
+    {
+      "id": "5",
+      "title": "Roof Inspections",
+      "description": "Detailed written reports for pre-purchase home inspections, insurance renewals, or general peace of mind. Infrared moisture scanning available."
+    },
+    {
+      "id": "6",
+      "title": "Gutters & Ventilation",
+      "description": "Seamless gutter installation, guards, downspout extensions, and attic ventilation systems that protect your roof from the inside out."
+    }
+  ],
+  "processes": [
+    {
+      "id": "1",
+      "title": "Free Inspection",
+      "description": "We visit your property, assess the roof's condition, take measurements, and identify any existing damage — at no cost to you."
+    },
+    {
+      "id": "2",
+      "title": "Written Estimate",
+      "description": "You receive a detailed, itemized quote within 48 hours. We walk you through every line item and answer all your questions before you sign."
+    },
+    {
+      "id": "3",
+      "title": "Installation Day",
+      "description": "Our crew arrives on schedule, protects your property, and completes the work with minimal disruption. A project manager is on-site throughout."
+    },
+    {
+      "id": "4",
+      "title": "Final Walkthrough",
+      "description": "We inspect the finished roof with you, clean up completely, and provide all warranty documentation before we consider the job done."
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
